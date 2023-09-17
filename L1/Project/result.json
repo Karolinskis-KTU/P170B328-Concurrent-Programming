@@ -1,0 +1,84 @@
+{
+  "cars": [
+    {
+      "name": "458 Italia",
+      "fuel_tank_size": 194,
+      "fuel_efficiency": 3.36
+    },
+    {
+      "name": "928",
+      "fuel_tank_size": 89,
+      "fuel_efficiency": 3.79
+    },
+    {
+      "name": "929",
+      "fuel_tank_size": 92,
+      "fuel_efficiency": 6.65
+    },
+    {
+      "name": "Achieva",
+      "fuel_tank_size": 107,
+      "fuel_efficiency": 2.8
+    },
+    {
+      "name": "Express 1500",
+      "fuel_tank_size": 181,
+      "fuel_efficiency": 6.37
+    },
+    {
+      "name": "Galant",
+      "fuel_tank_size": 163,
+      "fuel_efficiency": 11.62
+    },
+    {
+      "name": "Grand Caravan",
+      "fuel_tank_size": 41,
+      "fuel_efficiency": 5.32
+    },
+    {
+      "name": "Integra",
+      "fuel_tank_size": 12,
+      "fuel_efficiency": 5.23
+    },
+    {
+      "name": "Malibu Maxx",
+      "fuel_tank_size": 100,
+      "fuel_efficiency": 12.72
+    },
+    {
+      "name": "Millenia",
+      "fuel_tank_size": 117,
+      "fuel_efficiency": 6.22
+    },
+    {
+      "name": "RVR",
+      "fuel_tank_size": 178,
+      "fuel_efficiency": 5.21
+    },
+    {
+      "name": "Skylark",
+      "fuel_tank_size": 40,
+      "fuel_efficiency": 8.02
+    },
+    {
+      "name": "Terraza",
+      "fuel_tank_size": 188,
+      "fuel_efficiency": 2.73
+    },
+    {
+      "name": "Tribeca",
+      "fuel_tank_size": 189,
+      "fuel_efficiency": 10.99
+    },
+    {
+      "name": "X6 M",
+      "fuel_tank_size": 95,
+      "fuel_efficiency": 14.52
+    },
+    {
+      "name": "XL-7",
+      "fuel_tank_size": 198,
+      "fuel_efficiency": 11.42
+    }
+  ]
+}

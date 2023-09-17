@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"sort"
 	"sync"
 )
 
@@ -16,7 +16,7 @@ func NewResultMonitor() *ResultMonitor {
 	}
 }
 
-func (rm *ResultMonitor) addResultItem(value Car) {
+func (rm *ResultMonitor) addItemSorted(value Car) {
 	rm.Lock()
 	defer rm.Unlock()
 
@@ -24,6 +24,7 @@ func (rm *ResultMonitor) addResultItem(value Car) {
 	carComputed.Car = value
 	carComputed.HashCode = value.hashCode()
 
+	// Check if the sum of the digits of the hash code is even
 	temp := carComputed.HashCode
 	sum := 0
 	for temp != 0 {
@@ -31,11 +32,17 @@ func (rm *ResultMonitor) addResultItem(value Car) {
 		temp /= 10
 	}
 
+	// If the sum is even, add the item to the result list
 	if sum%2 == 0 {
+
 		rm.data = append(rm.data, value)
-		fmt.Println("Added item: ", value.Name)
+
+		sort.Slice(rm.data, func(i, j int) bool {
+			return rm.data[i].Name < rm.data[j].Name
+		})
+		//fmt.Println("Added item: ", value.Name)
 	} else {
-		fmt.Println("Ignored item: ", value.Name)
+		//fmt.Println("Ignored item: ", value.Name)
 	}
 
 }

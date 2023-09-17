@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"hash/fnv"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 // Cars struct which contains
@@ -29,6 +31,13 @@ func (c Car) hashCode() int {
 	h := fnv.New32a()
 	h.Write([]byte(data))
 	hashCode := int(h.Sum32())
+
+	rand.Seed(time.Now().UnixNano())
+	minSleep := 10
+	maxSleep := 50
+	sleepDuration := time.Duration(rand.Intn(maxSleep-minSleep+1)+minSleep) * time.Millisecond
+
+	time.Sleep(sleepDuration)
 
 	return hashCode
 }

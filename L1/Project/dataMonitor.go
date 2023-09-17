@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -20,7 +19,7 @@ func (dm *DataMonitor) addDataItem(value Car) {
 	dm.Lock()
 	defer dm.Unlock()
 	dm.data = append(dm.data, value)
-	fmt.Println("Added item: ", value.Name)
+	//fmt.Println("Added item: ", value.Name)
 }
 
 func (dm *DataMonitor) removeDataItem(index int) Car {
@@ -29,9 +28,9 @@ func (dm *DataMonitor) removeDataItem(index int) Car {
 	if index >= 0 && index < len(dm.data) {
 		removedItem := dm.data[index]
 		dm.data = append(dm.data[:index], dm.data[index+1:]...)
-		fmt.Println("Removed item: ", removedItem.Name)
+		//fmt.Println("Removed item: ", removedItem.Name)
 		return removedItem
 	}
 
-	return Car{}
+	return Car{Name: "", FuelTankSize: 0, FuelEfficiency: 0}
 }

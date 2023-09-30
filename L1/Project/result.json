@@ -1,39 +1,64 @@
 {
   "cars": [
     {
-      "name": "458 Italia",
-      "fuel_tank_size": 194,
-      "fuel_efficiency": 3.36
+      "name": "350Z",
+      "fuel_tank_size": 167,
+      "fuel_efficiency": 13.25
     },
     {
-      "name": "928",
-      "fuel_tank_size": 89,
-      "fuel_efficiency": 3.79
+      "name": "A8",
+      "fuel_tank_size": 9,
+      "fuel_efficiency": 13.33
     },
     {
-      "name": "929",
-      "fuel_tank_size": 92,
-      "fuel_efficiency": 6.65
+      "name": "Accent",
+      "fuel_tank_size": 10,
+      "fuel_efficiency": 8.04
     },
     {
-      "name": "Achieva",
-      "fuel_tank_size": 107,
-      "fuel_efficiency": 2.8
+      "name": "Acclaim",
+      "fuel_tank_size": 94,
+      "fuel_efficiency": 10.92
     },
     {
-      "name": "Express 1500",
-      "fuel_tank_size": 181,
-      "fuel_efficiency": 6.37
+      "name": "B-Series Plus",
+      "fuel_tank_size": 34,
+      "fuel_efficiency": 7.05
     },
     {
-      "name": "Galant",
-      "fuel_tank_size": 163,
-      "fuel_efficiency": 11.62
+      "name": "Bonneville",
+      "fuel_tank_size": 154,
+      "fuel_efficiency": 12.46
     },
     {
-      "name": "Grand Caravan",
-      "fuel_tank_size": 41,
-      "fuel_efficiency": 5.32
+      "name": "Cabriolet",
+      "fuel_tank_size": 28,
+      "fuel_efficiency": 5.6
+    },
+    {
+      "name": "Eclipse",
+      "fuel_tank_size": 153,
+      "fuel_efficiency": 12.11
+    },
+    {
+      "name": "Fusion",
+      "fuel_tank_size": 26,
+      "fuel_efficiency": 1.96
+    },
+    {
+      "name": "G3",
+      "fuel_tank_size": 152,
+      "fuel_efficiency": 4.92
+    },
+    {
+      "name": "GT",
+      "fuel_tank_size": 97,
+      "fuel_efficiency": 2.33
+    },
+    {
+      "name": "Grand Prix",
+      "fuel_tank_size": 174,
+      "fuel_efficiency": 2.93
     },
     {
       "name": "Integra",
@@ -41,24 +66,44 @@
       "fuel_efficiency": 5.23
     },
     {
-      "name": "Malibu Maxx",
-      "fuel_tank_size": 100,
-      "fuel_efficiency": 12.72
+      "name": "Lancer",
+      "fuel_tank_size": 26,
+      "fuel_efficiency": 13.22
     },
     {
-      "name": "Millenia",
-      "fuel_tank_size": 117,
-      "fuel_efficiency": 6.22
+      "name": "MDX",
+      "fuel_tank_size": 37,
+      "fuel_efficiency": 5.64
     },
     {
-      "name": "RVR",
-      "fuel_tank_size": 178,
-      "fuel_efficiency": 5.21
+      "name": "Mustang",
+      "fuel_tank_size": 25,
+      "fuel_efficiency": 1.12
     },
     {
-      "name": "Skylark",
-      "fuel_tank_size": 40,
-      "fuel_efficiency": 8.02
+      "name": "Rainier",
+      "fuel_tank_size": 86,
+      "fuel_efficiency": 9.1
+    },
+    {
+      "name": "Silverado 2500",
+      "fuel_tank_size": 35,
+      "fuel_efficiency": 4.77
+    },
+    {
+      "name": "Solstice",
+      "fuel_tank_size": 15,
+      "fuel_efficiency": 3.73
+    },
+    {
+      "name": "Taurus",
+      "fuel_tank_size": 23,
+      "fuel_efficiency": 11.17
+    },
+    {
+      "name": "Tempest",
+      "fuel_tank_size": 10,
+      "fuel_efficiency": 11.72
     },
     {
       "name": "Terraza",
@@ -76,9 +121,9 @@
       "fuel_efficiency": 14.52
     },
     {
-      "name": "XL-7",
-      "fuel_tank_size": 198,
-      "fuel_efficiency": 11.42
+      "name": "XC90",
+      "fuel_tank_size": 43,
+      "fuel_efficiency": 12.3
     }
   ]
 }

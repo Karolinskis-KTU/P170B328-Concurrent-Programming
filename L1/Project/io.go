@@ -31,8 +31,7 @@ func readFile(filetoRead string) Cars {
 	// jsonFile's content into 'cars' which defined above
 	json.Unmarshal(byteValue, &cars)
 
-	fmt.Println("DEBUG | Cars found: " + strconv.Itoa(len(cars.Cars)))
-
+	fmt.Println("IO | Cars found: " + strconv.Itoa(len(cars.Cars)))
 	return cars
 }
 

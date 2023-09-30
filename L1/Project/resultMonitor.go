@@ -7,53 +7,46 @@ import (
 
 type ResultMonitor struct {
 	sync.Mutex // Embed Mutex to synchronize access to the data (No race conditions)
-	data       []Car
+	data       [30]Car
+	count      int
 }
 
 func NewResultMonitor() *ResultMonitor {
 	return &ResultMonitor{
-		data: []Car{},
+		data:  [30]Car{},
+		count: 0,
 	}
 }
 
+// Adds a Car value to the ResultMonitor's data slice in sorted order by name.
+// If the data slice is full, the program will stop and throw an error.
 func (rm *ResultMonitor) addItemSorted(value Car) {
 	rm.Lock()
 	defer rm.Unlock()
 
-	var carComputed CarComputed
-	carComputed.Car = value
-	carComputed.HashCode = value.hashCode()
-
-	// Check if the sum of the digits of the hash code is even
-	temp := carComputed.HashCode
-	sum := 0
-	for temp != 0 {
-		sum += temp % 10
-		temp /= 10
+	if rm.count == len(rm.data) {
+		// Array is full, stop the program and throw an error
+		panic("The result monitor is full.")
 	}
 
-	// If the sum is even, add the item to the result list
-	if sum%2 == 0 {
+	rm.data[rm.count] = value
+	rm.count++
 
-		rm.data = append(rm.data, value)
-
-		sort.Slice(rm.data, func(i, j int) bool {
-			return rm.data[i].Name < rm.data[j].Name
-		})
-		//fmt.Println("Added item: ", value.Name)
-	} else {
-		//fmt.Println("Ignored item: ", value.Name)
-	}
-
+	// Sort the data slice by name
+	sort.Slice((rm.data[:rm.count]), func(i, j int) bool {
+		return rm.data[i].Name < rm.data[j].Name
+	})
 }
 
+// Returns a copy of the ResultMonitor's data slice, sorted by name.
+// The method creates a copy of te data slice to avoid concurrent access issues.
 func (rm *ResultMonitor) getResultItems() []Car {
 	rm.Lock()
 	defer rm.Unlock()
 
 	// Create a copy of the data slice to avoid concurrent access issues
-	dataCopy := make([]Car, len(rm.data))
-	copy(dataCopy, rm.data)
+	dataCopy := make([]Car, rm.count)
+	copy(dataCopy, rm.data[:rm.count])
 
 	return dataCopy
 }

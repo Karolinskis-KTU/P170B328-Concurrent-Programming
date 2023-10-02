@@ -75,7 +75,7 @@ func main() {
 
 func execute(name string, group *sync.WaitGroup, start chan bool, read_end chan bool) {
 	defer group.Done()
-	fmt.Println("Worker | Starting worker:", name, "...")
+	fmt.Println(name, "| Starting...")
 
 	// Wait for the start signal
 	<-start
@@ -91,6 +91,7 @@ func execute(name string, group *sync.WaitGroup, start chan bool, read_end chan 
 					return
 				} else {
 					//  If there are still data items in the data monitor, process them
+					continue
 				}
 			default:
 				//fmt.Println(name, "| The data monitor is empty. Waiting for more data items...")
@@ -118,6 +119,7 @@ func execute(name string, group *sync.WaitGroup, start chan bool, read_end chan 
 			rm.addItemSorted(item)
 		} else {
 			//fmt.Println(name, "| Item discarded:", sum, item.Name)
+			continue
 		}
 	}
 }

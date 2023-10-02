@@ -17,7 +17,7 @@ func readFile(filetoRead string) Cars {
 		os.Exit(1)
 	}
 
-	fmt.Println("Successfully Opened", filetoRead)
+	fmt.Println("IO | Successfully opened", filetoRead)
 	// defer te closing of our jsonFile so that we can parse it later on
 	defer inputFile.Close()
 
@@ -45,7 +45,7 @@ func writeFile(fileToWrite string, cars []Car) {
 		os.Exit(1)
 	}
 
-	fmt.Println("Successfully Created", fileToWrite)
+	fmt.Println("IO | Successfully created", fileToWrite)
 	// defer te closing of our jsonFile so that we can parse it later on
 	defer file.Close()
 

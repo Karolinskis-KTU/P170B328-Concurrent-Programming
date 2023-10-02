@@ -46,9 +46,7 @@ func (dm *DataMonitor) addDataItem(value Car) {
 // If an item is removed and the data slice is no longer full, the method will signal that an item has been removed.
 func (dm *DataMonitor) removeDataItem(index int) Car {
 	dm.Lock()
-	defer func() {
-		dm.Unlock()
-	}()
+	defer dm.Unlock()
 
 	if index >= 0 && index < dm.count {
 		removedItem := dm.data[index]

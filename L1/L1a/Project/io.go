@@ -65,3 +65,14 @@ func writeFile(fileToWrite string, cars []Car) {
 		return
 	}
 }
+
+func printData(cars []Car, header string) {
+	fmt.Printf("%+30s \n", header)
+	fmt.Printf("%-5s | %-20s | %-17s | %-15s\n", "#", "Name", "Fuel Efficiency", "Fuel Tank Size")
+	fmt.Println("------------------------------------------------------------------")
+	for i := 0; i < len(cars); i++ {
+		fmt.Printf("%-5d | %-20s | %-17.2f | %-15d\n", i+1, cars[i].Name, cars[i].FuelEfficiency, cars[i].FuelTankSize)
+	}
+	fmt.Println("Count: ", len(cars))
+	fmt.Println("------------------------------------------------------------------")
+}

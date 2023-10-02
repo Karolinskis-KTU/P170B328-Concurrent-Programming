@@ -5,62 +5,70 @@ import (
 )
 
 type DataMonitor struct {
-	sync.Mutex // Embed Mutex to synchronize access to the data (No race conditions)
-	data       [10]Car
+	data       []Car
+	maxSize    int
 	count      int
 	cond       *sync.Cond
+	isSignaled bool // Indicates if the data monitor has been signaled to stop
+	sync.Mutex      // Embed Mutex to synchronize access to the data (No race conditions)
 }
 
-func NewDataMonitor() *DataMonitor {
+func NewDataMonitor(size int) *DataMonitor {
 	dm := &DataMonitor{
-		data:  [10]Car{},
-		count: 0,
+		data:    make([]Car, 0, size),
+		count:   0,
+		maxSize: size,
 	}
 	dm.cond = sync.NewCond(&dm.Mutex)
 	return dm
 }
 
-// Adds a Car value to the DataMonitor's data slice.
-// If the data slice is full, the program will wait until an item is removed.
-// If the added item is the first item in the data slice, the method will signal that an item has been added.
+// Adds a Car value to the data monitor
+// If the data monitor is full, the method will wait until an item is removed
 func (dm *DataMonitor) addDataItem(value Car) {
 	dm.Lock()
 	defer dm.Unlock()
 
-	for dm.count == len(dm.data) {
-		// Array is full, wait for an item to be removed
-		dm.Unlock()
-		dm.Lock()
+	if len(dm.data) >= dm.maxSize {
+		// Array is full, wait until an item is removed
+		dm.cond.Wait()
 	}
 
-	dm.data[dm.count] = value
+	dm.data = append(dm.data, value)
 	dm.count++
 
-	if dm.count == 1 {
-		// Signal that an item has been added
-		dm.cond.Signal()
-	}
+	dm.cond.Broadcast()
 }
 
-// Removes a Car value from the DataMonitor's data slice at the given index.
-// If an item is removed and the data slice is no longer full, the method will signal that an item has been removed.
-func (dm *DataMonitor) removeDataItem(index int) Car {
+// Removes the last item from the data monitor
+// If the data monitor is empty, the method will wait until an item is added
+// If the data monitor is signaled to stop and there are no more data items in the data monitor, the method will return an empty Car value
+func (dm *DataMonitor) removeDataItem() Car {
 	dm.Lock()
 	defer dm.Unlock()
 
-	if index >= 0 && index < dm.count {
-		removedItem := dm.data[index]
-		copy(dm.data[index:], dm.data[index+1:dm.count])
-		dm.count--
-		//fmt.Println("Removed item: ", removedItem.Name)
-
-		if dm.count == len(dm.data)-1 {
-			// Signal that an item has been removed
-			dm.cond.Signal()
-		}
-
-		return removedItem
+	for len(dm.data) == 0 && !dm.isSignaled {
+		dm.cond.Wait()
 	}
 
-	return Car{Name: "", FuelTankSize: 0, FuelEfficiency: 0}
+	if dm.isSignaled && len(dm.data) == 0 {
+		// The data monitor has been signaled to stop and there are no more data items in the data monitor
+		return Car{}
+	}
+
+	removedItem := dm.data[len(dm.data)-1]
+	dm.data = dm.data[:len(dm.data)-1]
+	dm.count--
+
+	dm.cond.Broadcast() // Broadcast that an item has been removed
+	return removedItem
+}
+
+// Signals the data monitor to stop
+func (dm *DataMonitor) signalStop() {
+	dm.Lock()
+	defer dm.Unlock()
+
+	dm.isSignaled = true
+	dm.cond.Broadcast()
 }

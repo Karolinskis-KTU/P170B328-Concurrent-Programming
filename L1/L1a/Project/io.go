@@ -35,35 +35,32 @@ func readFile(filetoRead string) Cars {
 	return cars
 }
 
-func writeFile(fileToWrite string, cars []Car) {
-	// create a file for writing
-	file, err := os.Create(fileToWrite)
+func writeFile(fileToWrite string, cars []Car, header string) {
+	// Create a file for writing
+	file, err := os.OpenFile(fileToWrite, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 
-	// if os.Create returns an error then handle it
+	// If os.Create returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	fmt.Println("IO | Successfully created", fileToWrite)
-	// defer te closing of our jsonFile so that we can parse it later on
+	fmt.Println("IO | Successfully added to:", fileToWrite)
+	// Defer the closing of our file so that we can close it later on
 	defer file.Close()
 
-	carList := Cars{Cars: cars}
+	// Write header information to the file
+	fmt.Fprintf(file, "%+30s\n", header)
+	fmt.Fprintf(file, "%-5s | %-20s | %-17s | %-15s\n", "#", "Name", "Fuel Efficiency", "Fuel Tank Size")
+	fmt.Fprintln(file, "------------------------------------------------------------------")
 
-	// write our opened jsonFile as a byte array.
-	byteValue, err := json.MarshalIndent(carList, "", "  ")
-	if err != nil {
-		fmt.Println(err)
-		return
+	// Write car data to the file
+	for i, car := range cars {
+		fmt.Fprintf(file, "%-5d | %-20s | %-17.2f | %-15d\n", i+1, car.Name, car.FuelEfficiency, car.FuelTankSize)
 	}
 
-	// write the byteArray to our file
-	_, err = file.Write(byteValue)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	fmt.Fprintln(file, "Count: ", len(cars))
+	fmt.Fprintln(file, "------------------------------------------------------------------")
 }
 
 func printData(cars []Car, header string) {

@@ -11,7 +11,7 @@ import (
 // go run . {fileToRead}
 func main() {
 	var inputFile string = ""
-	var outputFile string = "../Data/IFF-1-1_PaulaviciusK_L1_res.json"
+	var outputFile string = "../Data/IFF-1-1_PaulaviciusK_L1_res.txt"
 
 	if len(os.Args) > 1 {
 		switch os.Args[1] {
@@ -50,10 +50,15 @@ func main() {
 
 	waitGroup.Wait()
 
+	if _, err := os.Stat(outputFile); err == nil {
+		os.Remove(outputFile)
+	}
+
 	result := rm.getResultItems()
 	printData(cars.Cars, "Data")
 	printData(result, "Result")
-	writeFile(outputFile, result)
+	writeFile(outputFile, cars.Cars, "Data")
+	writeFile(outputFile, result, "Result")
 }
 
 func execute(name string, dm *DataMonitor, rm *ResultMonitor, group *sync.WaitGroup) {

@@ -32,7 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="IFF-1-1_PaulaviciusK_L1_res.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
 </Project>

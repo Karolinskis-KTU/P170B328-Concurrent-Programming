@@ -1,0 +1,29 @@
+{
+    "cars": [
+        {"name":"S4","fuel_tank_size":92,"fuel_efficiency":4.15},
+        {"name":"1 Series","fuel_tank_size":82,"fuel_efficiency":11.39},
+        {"name":"SL-Class","fuel_tank_size":25,"fuel_efficiency":11.08},
+        {"name":"Cooper","fuel_tank_size":55,"fuel_efficiency":12.57},    
+        {"name":"Cavalier","fuel_tank_size":11,"fuel_efficiency":4.91},
+        {"name":"MKZ","fuel_tank_size":51,"fuel_efficiency":3.78},   
+        {"name":"Boxster","fuel_tank_size":30,"fuel_efficiency":5.31},    
+        {"name":"LS","fuel_tank_size":76,"fuel_efficiency":5.47}, 
+        {"name":"Neon","fuel_tank_size":48,"fuel_efficiency":13.34},  
+        {"name":"Xterra","fuel_tank_size":25,"fuel_efficiency":13.67},  
+        {"name":"XK","fuel_tank_size":52,"fuel_efficiency":7.89},
+        {"name":"Sonoma Club Coupe","fuel_tank_size":77,"fuel_efficiency":4.32},
+        {"name":"Discovery Series II","fuel_tank_size":83,"fuel_efficiency":7.75},
+        {"name":"Biturbo","fuel_tank_size":75,"fuel_efficiency":5.5},
+        {"name":"Montero","fuel_tank_size":57,"fuel_efficiency":7.95},
+        {"name":"Prelude","fuel_tank_size":46,"fuel_efficiency":10.44},
+        {"name":"Camaro","fuel_tank_size":22,"fuel_efficiency":7.49},
+        {"name":"Veracruz","fuel_tank_size":86,"fuel_efficiency":13.18},
+        {"name":"Prizm","fuel_tank_size":24,"fuel_efficiency":8.57},
+        {"name":"Civic","fuel_tank_size":68,"fuel_efficiency":7.51},
+        {"name":"Caliber","fuel_tank_size":61,"fuel_efficiency":2.99},
+        {"name":"1500","fuel_tank_size":84,"fuel_efficiency":7.97},
+        {"name":"Sunfire","fuel_tank_size":58,"fuel_efficiency":8.0},
+        {"name":"S2000","fuel_tank_size":40,"fuel_efficiency":1.1},
+        {"name":"Fiero","fuel_tank_size":57,"fuel_efficiency":12.61}
+    ]
+}

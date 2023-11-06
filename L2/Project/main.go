@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Car
@@ -33,26 +34,29 @@ func (c Car) hashCode() int {
 }
 
 // Settings
-const workerCount = 1
+const workerCount = 6
 const DataProcessSize = 10
 const DataFileSize = 25
 
 // go run . {fileToRead}
 func main() {
 	var inputFile string = ""
-	var outputFile string = "../Data/IFF-1-1_PaulaviciusK_L1_res.txt"
+	var outputFile string = ""
 
 	if len(os.Args) > 1 {
 		switch os.Args[1] {
 		case "1":
 			// All fit the criteria
 			inputFile = "../Data/IFF-1-1_PaulaviciusK_L2_dat_1.json"
+			outputFile = "../Data/IFF-1-1_PaulaviciusK_L2_res_1.txt"
 		case "2":
 			// Some fit the criteria
 			inputFile = "../Data/IFF-1-1_PaulaviciusK_L2_dat_2.json"
+			outputFile = "../Data/IFF-1-1_PaulaviciusK_L2_res_2.txt"
 		case "3":
 			// None fit the criteria
 			inputFile = "../Data/IFF-1-1_PaulaviciusK_L2_dat_3.json"
+			outputFile = "../Data/IFF-1-1_PaulaviciusK_L2_res_3.txt"
 		default:
 			fmt.Println("ERROR | Invalid argument provided")
 			os.Exit(1)
@@ -80,8 +84,8 @@ func main() {
 	for i := 0; i < workerCount; i++ {
 		go func() {
 			for {
-				dataRemoveRequest <- '+'
-				Car := <-dataOutputChannel
+				dataRemoveRequest <- '+'   // Send a data removal request
+				Car := <-dataOutputChannel // Receive car data from the data thread
 				if Car.Name == "<Error>" {
 					break
 				}
@@ -90,10 +94,10 @@ func main() {
 				fib := closestFibonacci(hashCode)
 
 				if sumIsEven(fib) {
-					carsOutputChannel <- Car
+					carsOutputChannel <- Car // Send car data to the results thread
 				}
 			}
-			carsToMainChannel <- '+'
+			carsToMainChannel <- '+' // Send a worker completion request
 		}()
 	}
 
@@ -104,32 +108,36 @@ func main() {
 		var Constants = [3]int{0, 0, 0} // Start, End, Size
 
 		AddCar := func() {
+			// Receive car data from the main thread
+			// Update the "End" and "Size" constants
 			CarClone[Constants[1]] = <-dataInputChannel
 			Constants[1] = (Constants[1] + 1) % DataProcessSize
 			Constants[2]++
 		}
 
 		RemoveCar := func() {
+			// Send car data to the worker threads
+			// Update the "Start" and "Size" constants
 			dataOutputChannel <- CarClone[Constants[0]]
 			Constants[0] = (Constants[0] + 1) % DataProcessSize
 			Constants[2]--
 		}
 		for {
-			if Constants[2] > 0 && Constants[2] < DataProcessSize {
+			if Constants[2] > 0 && Constants[2] < DataProcessSize { // We have data, and the clone is not full
 				select {
-				case <-dataAdditionRequest:
+				case <-dataAdditionRequest: // If a data addition request is received, add a car
 					AddCar()
-				case <-dataRemoveRequest:
+				case <-dataRemoveRequest: // If a data removal request is received, remove a car
 					RemoveCar()
 				}
-			} else if Constants[2] == 0 {
-				Message := <-dataAdditionRequest
+			} else if Constants[2] == 0 { // Car clone is empty
+				Message := <-dataAdditionRequest // wait for a data addition request
 				if Message == '-' {
 					break
 				}
 				AddCar()
 			} else {
-				<-dataRemoveRequest
+				<-dataRemoveRequest // wait for a data removal request
 				RemoveCar()
 			}
 		}
@@ -140,9 +148,10 @@ func main() {
 		defer close(ResultsOutputChannel)
 		var Results [DataFileSize]Car
 		Count := 0
-		for Car := range carsOutputChannel {
+		for Car := range carsOutputChannel { // Continuously receive car data from the worker threads
 			i := Count
 			for i > 0 && ((Results[i-1].FuelTankSize == Car.FuelTankSize && int(Results[i-1].FuelEfficiency) > int(Car.FuelEfficiency)) || Results[i-1].FuelTankSize > Car.FuelTankSize) {
+				// Sort the car data
 				Results[i] = Results[i-1]
 				i--
 			}
@@ -150,16 +159,20 @@ func main() {
 			Count++
 		}
 		for i := 0; i < Count; i++ {
+			// Send the sorted car data to the main thread
 			ResultsOutputChannel <- Results[i]
 		}
 	}()
 
-	// Duomenu siuntimas po viena
+	// Loop through the cars array in the 'cars' variable
+	// Send the car data to the data thread
 	for i := 0; i < len(cars.Cars); i++ {
 		dataAdditionRequest <- '+'
 		dataInputChannel <- cars.Cars[i]
+		time.Sleep(300 * time.Millisecond)
 	}
 
+	// Create a termination signal for the worker threads
 	for i := 0; i < workerCount; i++ {
 		dataAdditionRequest <- '+'
 		dataInputChannel <- Car{Name: "<Error>"}
@@ -187,6 +200,9 @@ func main() {
 	}
 	WriteFile(outputFile, cars.Cars, "Initial Data")
 	WriteFile(outputFile, Results, "Results")
+
+	// PrintData(cars.Cars, "Initial Data")
+	// PrintData(Results, "Results")
 }
 
 func closestFibonacci(n int) int {

@@ -10,7 +10,7 @@ learning_rate = 0.01
 num_iterations = 150
 
 # Globals
-runtime = []
+runtime = [] # List to store runtimes for different proccesses
 CITY_SIZE_X = (0, 0)
 CITY_SIZE_Y = (0, 0)
 existing_stores_count = 0
@@ -53,23 +53,29 @@ def distance_to_boundary_cost(x, y):
         return 1 / softplus(0.25 * dist**2)  # return a higher cost when the store is closer to the city boundary
     
 def closest_point_to_edge(x, y):
+    # Find the closest point to the city edge
     x = max(CITY_SIZE_X[0], min(x, CITY_SIZE_X[1]))
     y = max(CITY_SIZE_Y[0], min(y, CITY_SIZE_Y[1]))
     
     if y < (CITY_SIZE_Y[0] + CITY_SIZE_Y[1]) / 2:
         return (x, CITY_SIZE_Y[0])
     else:
-        return (x, CITY_SIZE_Y[1]) if y >= (CITY_SIZE_Y[0] + CITY_SIZE_Y[1]) / 2 else (CITY_SIZE_X[0], y) if x < (CITY_SIZE_X[0] + CITY_SIZE_X[1]) / 2 else (CITY_SIZE_X[1], y)
+        return (x, CITY_SIZE_Y[1]) if y >= (CITY_SIZE_Y[0] + CITY_SIZE_Y[1]) / 2 else (
+        CITY_SIZE_X[0], y) if x < (CITY_SIZE_X[0] + CITY_SIZE_X[1]) / 2 else (CITY_SIZE_X[1], y)
 
 def objective(existing_locations, new_locations):
+    # Calculate the total cost of placing new stores
     total_cost = 0
     for new_location in new_locations:
-        distance_to_existing_stores = np.mean([distance_to_location_cost(new_location[0], new_location[1], existing_location[0], existing_location[1]) for existing_location in existing_locations])
+        distance_to_existing_stores = np.mean(
+            [distance_to_location_cost(new_location[0], new_location[1], existing_location[0], existing_location[1]) 
+             for existing_location in existing_locations])
         distance_to_boundary = distance_to_boundary_cost(new_location[0], new_location[1])
         total_cost += distance_to_existing_stores + distance_to_boundary
     return total_cost
 
 def calculate_gradient(args):
+    # Calculate the gradient for optimization
     existing_stores, new_stores, j, k = args
     new_stores_count = new_stores.shape[0]  # get the number of new stores
     perturbation = np.zeros((new_stores_count,2))
@@ -81,7 +87,8 @@ def calculate_gradient(args):
 def visualisation(existing_stores, new_stores, title):
     # Visualize the results
     plt.figure(figsize=(10, 10))
-    plt.scatter(existing_stores[:, 0], existing_stores[:, 1], color='blue', marker='o', label=f'Miesto parduotuves: {len(existing_stores)}')
+    plt.scatter(existing_stores[:, 0], existing_stores[:, 1], color='blue', marker='o', 
+                label=f'Miesto parduotuves: {len(existing_stores)}')
     plt.scatter(new_stores[:, 0], new_stores[:, 1], color='red', marker='x', label=f'Naujos parduotuves: {len(new_stores)}')
     # Draw city boundaries
     plt.plot([CITY_SIZE_X[0], CITY_SIZE_X[1]], [CITY_SIZE_Y[0], CITY_SIZE_Y[0]], color='black')
@@ -93,16 +100,10 @@ def visualisation(existing_stores, new_stores, title):
     plt.legend(loc='upper right')
     plt.title(f'{title}')
     plt.grid(True)
-    plt.show()
+    plt.show(block=False)
+    plt.pause(0.001)
 
 def plot_objective_function(num_iterations, objective_values):
-    """
-    Create and plot the objective function graph.
-
-    Parameters:
-    num_iterations (int): The number of iterations.
-    objective_values (list): The values of the objective function at each iteration.
-    """
     plt.figure()
     plt.plot(range(num_iterations), objective_values, label="Tikslo funkcija")
     plt.xlabel('Iteracijos')
@@ -110,7 +111,8 @@ def plot_objective_function(num_iterations, objective_values):
     plt.legend(loc='upper right')
     plt.title('Tikslo funkcijos priklausomybė nuo iteracijos')
     plt.grid(True)
-    plt.show()
+    plt.show(block=False)
+    plt.pause(0.001)
 
 def plot_runtime(runtimes, dots, iterations):
     plt.figure()
@@ -120,25 +122,34 @@ def plot_runtime(runtimes, dots, iterations):
     plt.suptitle('Laiko priklausomybė nuo procesų skaičiaus')
     plt.title('Taškai: ' + str(dots) + ', Iteracijos: ' + str(iterations))
     plt.grid(True)
-    plt.show()    
+    plt.show(block=False)
+    plt.pause(0.001)    
 
 if __name__ == "__main__":
     # Read data from file
-    read_data("existing18_new25.json")
+    read_data("existing5_new50.json")
 
 
-    # visualisation(existing_stores, new_stores, "Pradinės parduotuvių vietos")
+    visualisation(existing_stores, new_stores, "Pradinės parduotuvių vietos")
     print(objective(existing_stores, new_stores))
 
     for processes in range(1, max_processes + 1):
         start_time = time.time()
+
         with Pool(processes=processes) as pool:
             objective_values = []
             print(f"Starting calculations for pool with {processes} processes...")
+
             for i in range(num_iterations):
                 print(f"\rStarting iteration {i+1}...", end='', flush=True)
+                
+                # Create a list of arguments for calculate_gradient function using list comprehension
                 args = [(existing_stores, new_stores, j, k) for j in range(new_stores_count) for k in range(2)]
+                
+                # Use the Pool.map function to parallelize the calculation of gradients
                 grad = np.array(pool.map(calculate_gradient, args)).reshape(new_stores_count, 2)
+
+
                 new_stores -= learning_rate * grad
                 objective_value = objective(existing_stores, new_stores)
                 objective_values.append(objective_value)
@@ -148,7 +159,8 @@ if __name__ == "__main__":
 
 
     print(objective(existing_stores, new_stores))
-    #visualisation(existing_stores, new_stores, "Galutinės parduotuvių vietos")
+    visualisation(existing_stores, new_stores, "Galutinės parduotuvių vietos")
+    #plot_objective_function(num_iterations, objective_values)
 
     print(f"Esamos parduotuvės: {existing_stores_count}")
     print(existing_stores)
@@ -156,4 +168,5 @@ if __name__ == "__main__":
     print(new_stores)
 
     plot_runtime(runtime, new_stores_count, num_iterations)
-    # plot_objective_function(num_iterations, objective_values)
+
+    input("Press ENTER to close the program.")

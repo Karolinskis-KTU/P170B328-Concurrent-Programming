@@ -28,7 +28,7 @@ Duomenų failai naudojami to paties formato, kaip L1 ir L2 metu, tačiau minimal
 }
 ```
 
-Duomenis, nuskaitytus iš failo, padalinti pasirinktam GPU gijų kiekiui (duomenų keikis turi **nesidalinti** iš bendro gijų kiekio; reikia naudoti bent du blokus, gijų kiekis bloke turi būti 32 kartotinis). Kiekvienam įrašui iš savo duomenų rinkinio GPU gija suskaičiuoja pasirinktą **tekstinio tipo** rezultatą ir jei jis tenkina pasirinktą sąlygą, įrašo į bendrą visoms gijoms rezultatų masyvą (galima nustatyti, kiek simbolių išskirti vienam rezultatų įrašui, ir jei liko neužpildytos vietos, ją užpildyti tarpais). Jei ne visi elementai atitinka filtro sąlygą, rezultatuose tarpų likti neturi - visi rezultatai turi būti rašomi į rašymo metu esančią pirmą laisvą masyvo vietą.
+Duomenis, nuskaitytus iš failo, padalinti pasirinktam GPU gijų kiekiui (duomenų kiekis turi **nesidalinti** iš bendro gijų kiekio; reikia naudoti bent du blokus, gijų kiekis bloke turi būti 32 kartotinis). Kiekvienam įrašui iš savo duomenų rinkinio GPU gija suskaičiuoja pasirinktą **tekstinio tipo** rezultatą ir jei jis tenkina pasirinktą sąlygą, įrašo į bendrą visoms gijoms rezultatų masyvą (galima nustatyti, kiek simbolių išskirti vienam rezultatų įrašui, ir jei liko neužpildytos vietos, ją užpildyti tarpais). Jei ne visi elementai atitinka filtro sąlygą, rezultatuose tarpų likti neturi - visi rezultatai turi būti rašomi į rašymo metu esančią pirmą laisvą masyvo vietą.
 
 Programą realizuoti naudojant CUDA gijas ir CUDA atminties valdymo funkcijas. Rezultatų failo pavyzdys (vardas pakeistas į didžiąsias raides, prijungti metai bei pagal pažymį nustatytas įvertinimas nuo A iki F; atrinkti įrašai, kurių pirma raidė abėcėlėje yra toliau, nei P):
 

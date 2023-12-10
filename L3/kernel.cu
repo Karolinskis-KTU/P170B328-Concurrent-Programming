@@ -75,6 +75,28 @@ void writeResultsToFile(const Result* results, int size, std::string filename) {
     std::cout << "Successfully wrote results to file: " << filename << std::endl;
 }
 
+void writeResultsToConsole(const Result* results, int size) {
+    char ans;
+    
+    std::cout << "Do you want to see the results in the console? (Enter 'Y' for Yes, 'N' for No): ";
+    std::cin >> ans;
+    ans = std::toupper(ans);
+
+    if (ans != 'Y') {
+        return;
+    }
+
+    int counter = 0;
+    for (int i = 0; i < size; i++) {
+        if (results[i].data[0] != '\0') {
+            std::cout << results[i].data << std::endl;
+            counter++;
+        }
+    }
+
+    std::cout << "Number of results: " << counter << std::endl;
+}
+
 void checkCudaDevice() {
     int deviceCount;
     cudaGetDeviceCount(&deviceCount);
@@ -224,6 +246,9 @@ int main() {
 
     // Print results
     writeResultsToFile(hostResults, dataSize, outputFile);
+
+    // Ask to write to console
+    writeResultsToConsole(hostResults, dataSize);
 
     // Free memory on GPU and host
     cudaFree(deviceCars);

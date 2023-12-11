@@ -44,7 +44,7 @@ SIMAS-3D
 
 ## Testas
 
-Testas atliekamas Moodle aplinkoje laboratorinių darbų metu. Testo klausimai sudaryti iš teorijos temų "C ir cŽŽ atminties valdymas", "Lygiagretusis programavimas CUDA" ir "Thrust". Testui skiriama 20 minučių.
+Testas atliekamas Moodle aplinkoje laboratorinių darbų metu. Testo klausimai sudaryti iš teorijos temų "C ir C++ atminties valdymas", "Lygiagretusis programavimas CUDA" ir "Thrust". Testui skiriama 20 minučių.
 
 ## L3 programų vertinimas
 

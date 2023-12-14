@@ -1,3 +1,6 @@
 [submodule "L1/L1b/json"]
 	path = L1/L1b/json
 	url = https://github.com/nlohmann/json
+[submodule "L3/json"]
+	path = L3/json
+	url = https://github.com/nlohmann/json
